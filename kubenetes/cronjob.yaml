@@ -1,0 +1,20 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  # Unique key of the Job instance
+  name: daily-report-slack
+  namespace: daily-report-slack
+spec:
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: daily-report-slack
+            image: registry.thinknet.co.th/daily-report/daily-report:latest
+            command: ['/bin/sh', '-c', 'echo "job naja"']
+          # Do not restart containers after they exit
+          restartPolicy: Never
