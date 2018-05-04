@@ -11,7 +11,8 @@ const server = express()
 
 const CronJob = cronJob.CronJob
 
-const { NODE_PORT, MONGO_CONNECTION } = process.env
+const NODE_PORT = 4000
+const MONGO_CONNECTION = 'mongodb://borbork:borbork@bar-bork-thinknet-shard-00-00-797rd.mongodb.net:27017,bar-bork-thinknet-shard-00-01-797rd.mongodb.net:27017,bar-bork-thinknet-shard-00-02-797rd.mongodb.net:27017/daily-report?ssl=true&replicaSet=bar-bork-thinknet-shard-0&authSource=admin'
 
 server.use(cors())
 server.use(bodyParser.json())
