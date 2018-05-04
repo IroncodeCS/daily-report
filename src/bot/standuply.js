@@ -16,7 +16,23 @@ controller
     //   channel: 'DAHFDJK7A'}, 'hello')
   })
 
-let user = [{ userID: 'U9B5AAHL5', message: [], countReply: 1 }]
+let user = [
+  { userID: 'U9B5AAHL5', message: [], countReply: 1 },
+  { userID: 'U46BQPT17', message: [], countReply: 1 },
+  { userID: 'U5M5CBHHT', message: [], countReply: 1 },
+  { userID: 'U5U3AG39N', message: [], countReply: 1 },
+  { userID: 'U5URS9RD3', message: [], countReply: 1 },
+  { userID: 'U5VH733B8', message: [], countReply: 1 },
+  { userID: 'U63037BNG', message: [], countReply: 1 },
+  { userID: 'U6FN98N2V', message: [], countReply: 1 },
+  { userID: 'U6Y4SH2MQ', message: [], countReply: 1 },
+  { userID: 'U7CFXMT3P', message: [], countReply: 1 },
+  { userID: 'U8CKPEFND', message: [], countReply: 1 },
+  { userID: 'U9B5AAHL5', message: [], countReply: 1 },
+  { userID: 'U9J9ABKS7', message: [], countReply: 1 },
+  { userID: 'U9SPR8AKY', message: [], countReply: 1 },
+  { userID: 'UAJBN6770', message: [], countReply: 1 },
+]
 let qa = [
   {
     question: 'เมื่อวานทำอะไรคะ?',
