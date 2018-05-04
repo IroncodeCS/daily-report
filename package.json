@@ -8,7 +8,7 @@
   "scripts": {
     "start": "node ./dist/server.js",
     "dev": "nodemon ./src/server.js --exec babel-node -e js",
-    "build": "babel src -d dist --copy-files"
+    "build": "babel src -d dist --copy-files && echo '/*    /index.html   200' > build/_redirects"
   },
   "dependencies": {
     "body-parser": "1.18.2",
