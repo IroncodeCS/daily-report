@@ -1,0 +1,19 @@
+version: '2'
+
+services:
+### daily-report-service ####
+    daily-report-service:
+        image: registry.thinknet.co.th/sredev/node:8
+        command: yarn dev
+        environment:
+            NODE_PORT: '4000'
+        ports:
+            - "4000:4000"
+        volumes:
+            - .:/usr/src/app
+
+### Connect Network #####
+networks:
+  default:
+      external:
+          name: daily-report-service-team
