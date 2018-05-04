@@ -20,9 +20,9 @@ server.use(bodyParser.urlencoded({
   extended: true,
 }))
 
-// new CronJob('0 */1 * * * *', () => {
-//   standuply()
-// }, null, true, 'Asia/Bangkok')
+new CronJob('0 */1 * * * *', () => {
+  standuply()
+}, null, true, 'Asia/Bangkok')
 
 // new CronJob('0 */1 * * * *', () => {
 //   console.log('cronJob 2 start')
