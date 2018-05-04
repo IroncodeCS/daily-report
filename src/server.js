@@ -5,6 +5,7 @@ import mongoose from 'mongoose'
 import cronJob from 'cron'
 
 import route from './route'
+import standuply from './bot/standuply'
 
 const server = express()
 
@@ -19,12 +20,12 @@ server.use(bodyParser.urlencoded({
 }))
 
 new CronJob('0 */1 * * * *', () => {
-  console.log('cronJob start')
+  standuply()
 }, null, true, 'Asia/Bangkok')
 
-new CronJob('0 */1 * * * *', () => {
-  console.log('cronJob 2 start')
-}, null, true, 'Asia/Bangkok')
+// new CronJob('0 */1 * * * *', () => {
+//   console.log('cronJob 2 start')
+// }, null, true, 'Asia/Bangkok')
 
 mongoose.Promise = global.Promise
 mongoose.connect(MONGO_CONNECTION)
