@@ -1,4 +1,5 @@
 import Botkit from 'botkit'
+import Message from '../schema/Message'
 
 var controller = Botkit.slackbot({ debug: false })
 controller
