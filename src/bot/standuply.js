@@ -11,13 +11,21 @@ controller
     }
   })
 
-let user = [{ userID: 'U9B5AAHL5', countReply: 0 }]
+let user = [{ userID: 'U9B5AAHL5', message: [], countReply: 0 }]
 controller.hears(
   [('.*')], ['direct_message', 'direct_mention', 'mention'],
   (bot, message) => {
     console.log(message);
-    if (message.user === user[0].userID && user[0].countReply < 3) {
-      bot.reply(message, '' + user[0].countReply);
+    if (message.user === user[0].userID) {
+      switch (user[0].countReply) {
+        case value:
+          
+          break;
+      
+        default:
+          break;
+      }
+      bot.reply(message, '' + user[0].countReply)
       count++
     }
   }
