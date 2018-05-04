@@ -2,10 +2,13 @@ import express from 'express'
 import cors from 'cors'
 import bodyParser from 'body-parser'
 import mongoose from 'mongoose'
+import cronJob from 'cron'
 
 import route from './route'
 
 const server = express()
+
+const CronJob = cronJob.CronJob
 
 const { NODE_PORT, MONGO_CONNECTION } = process.env
 
@@ -14,6 +17,14 @@ server.use(bodyParser.json())
 server.use(bodyParser.urlencoded({
   extended: true,
 }))
+
+new CronJob('0 */1 * * * *', () => {
+  console.log('cronJob start')
+}, null, true, 'Asia/Bangkok')
+
+new CronJob('0 */1 * * * *', () => {
+  console.log('cronJob 2 start')
+}, null, true, 'Asia/Bangkok')
 
 mongoose.Promise = global.Promise
 mongoose.connect(MONGO_CONNECTION)

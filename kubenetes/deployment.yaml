@@ -1,0 +1,40 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  # Unique key of the Deployment instance
+  name: daily-report
+  namespace: daily-report
+spec:
+  # 3 Pods should exist at all times.
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: daily-report
+    spec:
+      containers:
+      - name: daily-report
+        image: registry.thinknet.co.th/daily-report/daily-report:latest
+        env:
+        - name: NODE_PORT
+          value: '4000'
+        command: ['/bin/sh', '-c', 'yarn start']
+        ports:
+        - containerPort: 4000
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: daily-report
+  namespace: daily-report
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    port: 4000
+    targetPort: 4000
+    nodePort: 32131
+  selector:
+    name: daily-report
