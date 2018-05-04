@@ -18,13 +18,13 @@ server.use(bodyParser.urlencoded({
   extended: true,
 }))
 
-new CronJob('0 */1 * * * *', () => {
+new CronJob('0 */5 * * * *', () => {
   console.log('cronJob start')
 }, null, true, 'Asia/Bangkok')
 
-new CronJob('0 */1 * * * *', () => {
-  console.log('cronJob 2 start')
-}, null, true, 'Asia/Bangkok')
+// new CronJob('0 */5 * * * *', () => {
+//   console.log('cronJob 2 start')
+// }, null, true, 'Asia/Bangkok')
 
 mongoose.Promise = global.Promise
 mongoose.connect(MONGO_CONNECTION)

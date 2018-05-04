@@ -5,9 +5,9 @@ const route = (server) => {
   server.get('/', (req, res) => {
     res.send('Hello from Opal')
   })
-
+  Standuply()
   server.get('/save-message', (req, res) => {
-    Standuply()
+    
     // const doc = new Message({
     //   user: 'ok',
     //   message: [{ question: 'question', answer: 'answer' }],
