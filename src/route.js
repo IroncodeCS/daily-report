@@ -1,4 +1,5 @@
 import Message from './schema/Message'
+import Standuply from './bot/standuply';
 
 const route = (server) => {
   server.get('/', (req, res) => {
@@ -6,6 +7,7 @@ const route = (server) => {
   })
 
   server.get('/save-message', (req, res) => {
+    Standuply()
     // const doc = new Message({
     //   user: 'ok',
     //   message: [{ question: 'question', answer: 'answer' }],

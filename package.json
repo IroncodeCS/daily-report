@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "start": "nodemon ./src/bot/standuply.js --exec babel-node -e js",
-    "dev": "nodemon ./server/server.js --exec babel-node -e js",
+    "dev": "nodemon ./src/server.js --exec babel-node -e js",
     "build": "babel src -d dist --copy-files"
   },
   "dependencies": {
