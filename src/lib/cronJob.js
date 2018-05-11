@@ -9,7 +9,7 @@ const options = {
 
 const cronJob = (cronJobKey, min, hour, dayOfWeek) => {
 
-  const typeCronJob = /(close|frist|remind)$/.exec(cronJobKey)
+  const typeCronJob = /(close|first|remind)$/.exec(cronJobKey)
 
   const isExits = cronJobManager.exists(cronJobKey)
 

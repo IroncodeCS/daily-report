@@ -24,7 +24,7 @@ const route = (server) => {
 
   server.post('/update-cronjob-1', (req, res) => {
     const { teamId, min, hour, dayOfWeek } = req.body
-    const cronJobKey = `${teamId}-frist`
+    const cronJobKey = `${teamId}-first`
     cronJob(cronJobKey, min, hour, dayOfWeek)
     res.end()
   })
