@@ -9,6 +9,6 @@ const teamSchema = new SchemaModel({
   answer: { type: Array, default: []},
   created_at: { type: Date, default: Date.now }
 })
-const team = mongoose.model('Team', teamSchema)
+const Team = mongoose.model('Team', teamSchema)
 
-export default User
+export default Team
