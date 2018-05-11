@@ -1,9 +1,8 @@
 import Team from './schema/Team'
 import getTeams from './lib/getTeam'
 import getUser from './lib/getUser'
-// import Standuply from './bot/standuply';
+import Standuply from './bot/standuply';
 import Message from './schema/Message'
-import Team from './schema/Team'
 import calculateTimeCronjob from './lib/calculateTimeCronJob'
 import cronJob from './lib/cronJob'
 
@@ -11,7 +10,7 @@ import cronJob from './lib/cronJob'
 const route = (server) => {
 
   server.get('/standuply', (req, res) => {
-    // Standuply()    
+    Standuply()    
     res.send('Hello from Opal')
   })
 
