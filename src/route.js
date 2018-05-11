@@ -5,6 +5,10 @@ import Message from './schema/Message'
 import calculateTimeCronjob from './lib/calculateTimeCronJob'
 import cronJob from './lib/cronJob'
 
+import updateCronJobDbClose from './lib/updateCronJobDbClose';
+import updateCronJobDbFirst from './lib/updateCronJobDbFirst';
+import updateCronJobDbRemind from './lib/updateCronJobDbRemind';
+
 
 const route = (server) => {
 
@@ -55,6 +59,8 @@ const route = (server) => {
     const { teamId, firstMin, firstHour, dayOfWeek } = req.body
     const cronJobKey = `${teamId}-first`
     const result = cronJob(teamId, cronJobKey, firstMin, firstHour, dayOfWeek)
+    const schedule = `0 ${firstMin} ${firstHour} * * ${dayOfWeek}`
+    updateCronJobDbFirst(teamId, cronJobKey, schedule)
     result === 'success' ? res.status(200).end() : res.status(422).end()
   })
 
@@ -62,6 +68,8 @@ const route = (server) => {
     const { teamId, min, hour, firstMin, firstHour, dayOfWeek } = req.body
     const cronJobKey = `${teamId}-remind`
     const time = calculateTimeCronjob(min, hour, firstMin, firstHour)
+    const schedule = `0 ${time.min} ${time.hour} * * ${dayOfWeek}`
+    updateCronJobDbRemind(teamId, cronJobKey, schedule)
     const result = cronJob(teamId, cronJobKey, time.min, time.hour, dayOfWeek)
     result === 'success' ? res.status(200).end() : res.status(422).end()
   })
@@ -70,6 +78,8 @@ const route = (server) => {
     const { teamId, hour, firstMin, firstHour, dayOfWeek } = req.body
     const cronJobKey = `${teamId}-close`
     const time = calculateTimeCronjob('0', hour, firstMin, firstHour)
+    const schedule = `0 ${time.min} ${time.hour} * * ${dayOfWeek}`
+    updateCronJobDbClose(teamId, cronJobKey, schedule)
     const result = cronJob(teamId, cronJobKey, time.min, time.hour, dayOfWeek)
     result === 'success' ? res.status(200).end() : res.status(422).end()
   })
