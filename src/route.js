@@ -25,8 +25,6 @@ const route = (server) => {
 
   server.post('/update-cronjob-1', (req, res) => {
     const { teamId, firstMin, firstHour, dayOfWeek } = req.body
-
-    console.log('body : ', JSON.stringify(req.body))
     const cronJobKey = `${teamId}-first`
     const result = cronJob(cronJobKey, firstMin, firstHour, dayOfWeek)
     result === 'success' ? res.status(200).end() : res.status(422).end()
