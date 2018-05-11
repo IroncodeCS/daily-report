@@ -1,9 +1,7 @@
-import Team from './schema/Team'
 import getTeams from './lib/getTeam'
 import getUser from './lib/getUser'
 // import Standuply from './bot/standuply';
 import Message from './schema/Message'
-import Team from './schema/Team'
 import calculateTimeCronjob from './lib/calculateTimeCronJob'
 import cronJob from './lib/cronJob'
 
