@@ -28,7 +28,6 @@ const cronJob = (cronJobKey, min, hour, dayOfWeek) => {
       cronJobKey,
       `0 ${min} ${hour} * * ${dayOfWeek}`,
       () => { typeCronJob[0] === 'close' ? console.log('report') : standuply() })
-    cronJobManager.start(cronJobKey)
 
   }
 }
