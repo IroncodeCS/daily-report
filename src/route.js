@@ -2,6 +2,7 @@ import getTeams from './lib/getTeam'
 import getUser from './lib/getUser'
 // import Standuply from './bot/standuply';
 import Message from './schema/Message'
+import calculateTimeCronjob from './lib/calculateTimeCronJob'
 import cronJob from './lib/cronJob'
 
 
@@ -23,23 +24,25 @@ const route = (server) => {
   })
 
   server.post('/update-cronjob-1', (req, res) => {
-    const { teamId, min, hour, dayOfWeek } = req.body
+    const { teamId, firstMin, firstHour, dayOfWeek } = req.body
     const cronJobKey = `${teamId}-first`
-    cronJob(cronJobKey, min, hour, dayOfWeek)
+    cronJob(cronJobKey, firstMin, firstHour, dayOfWeek)
     res.end()
   })
 
   server.post('/update-cronjob-2', (req, res) => {
-    const { teamId, min, hour, dayOfWeek } = req.body
+    const { teamId, min, hour, firstMin, firstHour, dayOfWeek } = req.body
     const cronJobKey = `${teamId}-remind`
-    cronJob(cronJobKey, min, hour, dayOfWeek)
+    const time = calculateTimeCronjob(min, hour, firstMin, firstHour)
+    cronJob(cronJobKey, time.min, time.hour, dayOfWeek)
     res.end()
   })
 
   server.post('/update-cronjob-3', (req, res) => {
-    const { teamId, min, hour, dayOfWeek } = req.body
+    const { teamId, hour, firstMin, firstHour, dayOfWeek } = req.body
     const cronJobKey = `${teamId}-close`
-    cronJob(cronJobKey, min, hour, dayOfWeek)
+    const time = calculateTimeCronjob('0', hour, firstMin, firstHour)
+    cronJob(cronJobKey, time.min, time.hour, dayOfWeek)
     res.end()
   })
 

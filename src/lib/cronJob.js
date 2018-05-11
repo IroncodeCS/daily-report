@@ -1,5 +1,5 @@
 import CronJobManager from 'cron-job-manager'
-import standuply from '../bot/standuply';
+import standuply from '../bot/standuply'
 
 const cronJobManager = new CronJobManager()
 const options = {
@@ -30,6 +30,7 @@ const cronJob = (cronJobKey, min, hour, dayOfWeek) => {
       () => { typeCronJob[0] === 'close' ? console.log('report') : standuply() })
 
   }
+  console.log(cronJobManager.listCrons())
 }
 
 export default cronJob
