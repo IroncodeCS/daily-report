@@ -1,3 +1,4 @@
+import Team from './schema/Team'
 import getTeams from './lib/getTeam'
 import getUser from './lib/getUser'
 // import Standuply from './bot/standuply';
@@ -19,8 +20,15 @@ const route = (server) => {
   })
 
   server.get('/get-user', async (req, res) => {
-    const users = await getUser()
+    const { team_id } = req.params
+    const users = await getUser(team_id)
     res.json(users)
+  })
+
+  server.get('/get-user-team/:team_id', async (req, res) => {
+    const { team_id } = req.params
+    const team = await Team.findById(team_id).exec()
+    res.json(team)
   })
 
   server.post('/add-team', (req, res) => {
@@ -32,22 +40,12 @@ const route = (server) => {
   })
 
   server.post('/remove-team', (req, res) => {
-    Team.findByIdAndRemove(req.body.teamId, (err, res) => {
-      if(err){
-        console.log(err);
-      }
-      console.log(res);
-    })
+    Team.findByIdAndRemove(req.body.teamId, (err, res) => { })
     res.send('Remove')
   })
 
-  server.post('/edit-team', (req, res) => {
-    Team.findByIdAndUpdate(req.body.teamId, { team: req.body.team }, (err, res) => {
-      if(err){
-        console.log(err);
-      }
-      console.log(res);
-    })
+  server.post('/edit-team', async (req, res) => {
+    await Team.update({ _id: req.body.teamId }, { team: req.body.team })
     res.send('OK')
   })
 
