@@ -4,6 +4,7 @@ import bodyParser from 'body-parser'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import route from './route'
+import question from './route/question'
 import standuply from './bot/standuply'
 
 dotenv.load()
@@ -27,6 +28,7 @@ db.once('open', () => {
 })
 
 route(server)
+question(server)
 server.listen(NODE_PORT, () => console.log(`running server now! ${NODE_PORT}`))
 
 export default server
