@@ -2,9 +2,15 @@ import Team from './schema/Team'
 import getTeams from './lib/getTeam'
 import getUser from './lib/getUser'
 import Standuply from './bot/standuply';
+import getNotiByTeam from './lib/getNotiByTeam'
+// import Standuply from './bot/standuply';
 import Message from './schema/Message'
 import calculateTimeCronjob from './lib/calculateTimeCronJob'
 import cronJob from './lib/cronJob'
+
+import updateCronJobDbClose from './lib/updateCronJobDbClose';
+import updateCronJobDbFirst from './lib/updateCronJobDbFirst';
+import updateCronJobDbRemind from './lib/updateCronJobDbRemind';
 
 
 const route = (server) => {
@@ -14,14 +20,26 @@ const route = (server) => {
     res.send('Hello from Opal')
   })
 
+  server.get('/get-noti-by-team/:team_id', async (req, res) => {
+    const notiData = await getNotiByTeam(req.params.team_id)
+    res.json(notiData)
+  })
+
   server.get('/get-team', async (req, res) => {
     const teams = await getTeams()
     res.json(teams)
   })
 
   server.get('/get-user', async (req, res) => {
-    const users = await getUser()
+    const { team_id } = req.params
+    const users = await getUser(team_id)
     res.json(users)
+  })
+
+  server.get('/get-user-team/:team_id', async (req, res) => {
+    const { team_id } = req.params
+    const team = await Team.findById(team_id).exec()
+    res.json(team)
   })
 
   server.post('/add-team', (req, res) => {
@@ -33,29 +51,21 @@ const route = (server) => {
   })
 
   server.post('/remove-team', (req, res) => {
-    Team.findByIdAndRemove(req.body.teamId, (err, res) => {
-      if(err){
-        console.log(err);
-      }
-      console.log(res);
-    })
+    Team.findByIdAndRemove(req.body.teamId, (err, res) => { })
     res.send('Remove')
   })
 
-  server.post('/edit-team', (req, res) => {
-    Team.findByIdAndUpdate(req.body.teamId, { team: req.body.team }, (err, res) => {
-      if(err){
-        console.log(err);
-      }
-      console.log(res);
-    })
+  server.post('/edit-team', async (req, res) => {
+    await Team.update({ _id: req.body.teamId }, { team: req.body.team })
     res.send('OK')
   })
 
   server.post('/update-cronjob-1', (req, res) => {
     const { teamId, firstMin, firstHour, dayOfWeek } = req.body
     const cronJobKey = `${teamId}-first`
-    const result = cronJob(cronJobKey, firstMin, firstHour, dayOfWeek)
+    const result = cronJob(teamId, cronJobKey, firstMin, firstHour, dayOfWeek)
+    const schedule = `0 ${firstMin} ${firstHour} * * ${dayOfWeek}`
+    updateCronJobDbFirst(teamId, cronJobKey, schedule)
     result === 'success' ? res.status(200).end() : res.status(422).end()
   })
 
@@ -63,7 +73,9 @@ const route = (server) => {
     const { teamId, min, hour, firstMin, firstHour, dayOfWeek } = req.body
     const cronJobKey = `${teamId}-remind`
     const time = calculateTimeCronjob(min, hour, firstMin, firstHour)
-    const result = cronJob(cronJobKey, time.min, time.hour, dayOfWeek)
+    const schedule = `0 ${time.min} ${time.hour} * * ${dayOfWeek}`
+    updateCronJobDbRemind(teamId, cronJobKey, schedule)
+    const result = cronJob(teamId, cronJobKey, time.min, time.hour, dayOfWeek)
     result === 'success' ? res.status(200).end() : res.status(422).end()
   })
 
@@ -71,7 +83,9 @@ const route = (server) => {
     const { teamId, hour, firstMin, firstHour, dayOfWeek } = req.body
     const cronJobKey = `${teamId}-close`
     const time = calculateTimeCronjob('0', hour, firstMin, firstHour)
-    const result = cronJob(cronJobKey, time.min, time.hour, dayOfWeek)
+    const schedule = `0 ${time.min} ${time.hour} * * ${dayOfWeek}`
+    updateCronJobDbClose(teamId, cronJobKey, schedule)
+    const result = cronJob(teamId, cronJobKey, time.min, time.hour, dayOfWeek)
     result === 'success' ? res.status(200).end() : res.status(422).end()
   })
 
