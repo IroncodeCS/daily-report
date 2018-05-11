@@ -1,5 +1,8 @@
 import CronJobManager from 'cron-job-manager'
 import standuply from '../bot/standuply'
+import updateCronJobDbClose from './updateCronJobDbClose'
+import updateCronJobDbFirst from './updateCronJobDbFirst'
+import updateCronJobDbRemind from './updateCronJobDbRemind'
 
 const cronJobManager = new CronJobManager()
 const options = {
@@ -8,8 +11,9 @@ const options = {
   timeZone: 'Asia/Bangkok'
 }
 
-const cronJob = (cronJobKey, min, hour, dayOfWeek) => {
+const cronJob = (teamId, cronJobKey, min, hour, dayOfWeek) => {
 
+  const schedule = `0 ${min} ${hour} * * ${dayOfWeek}`
   const typeCronJob = /(close|first|remind)$/.exec(cronJobKey)
 
   const isExits = cronJobManager.exists(cronJobKey)
@@ -18,21 +22,24 @@ const cronJob = (cronJobKey, min, hour, dayOfWeek) => {
 
     cronJobManager.add(
       cronJobKey,
-      `0 ${min} ${hour} * * ${dayOfWeek}`,
+      schedule,
       () => { typeCronJob[0] === 'close' ? console.log('report') : standuply() },
       options)
       cronJobManager.start(cronJobKey)
 
+      updateCronJobDbFirst(teamId, cronJobKey, schedule)
+      updateCronJobDbRemind(teamId, cronJobKey, schedule)
+      updateCronJobDbClose(teamId, cronJobKey, schedule)
   } else {
 
     cronJobManager.update(
       cronJobKey,
-      `0 ${min} ${hour} * * ${dayOfWeek}`,
+      schedule,
       () => { typeCronJob[0] === 'close' ? console.log('report') : standuply() })
 
   }
+  console.log(cronJobManager.listCrons())
   return 'success'
-  // return cronJobManager.listCrons()
 }
 
 export default cronJob

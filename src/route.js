@@ -26,7 +26,7 @@ const route = (server) => {
   server.post('/update-cronjob-1', (req, res) => {
     const { teamId, firstMin, firstHour, dayOfWeek } = req.body
     const cronJobKey = `${teamId}-first`
-    const result = cronJob(cronJobKey, firstMin, firstHour, dayOfWeek)
+    const result = cronJob(teamId, cronJobKey, firstMin, firstHour, dayOfWeek)
     result === 'success' ? res.status(200).end() : res.status(422).end()
   })
 
@@ -34,7 +34,7 @@ const route = (server) => {
     const { teamId, min, hour, firstMin, firstHour, dayOfWeek } = req.body
     const cronJobKey = `${teamId}-remind`
     const time = calculateTimeCronjob(min, hour, firstMin, firstHour)
-    const result = cronJob(cronJobKey, time.min, time.hour, dayOfWeek)
+    const result = cronJob(teamId, cronJobKey, time.min, time.hour, dayOfWeek)
     result === 'success' ? res.status(200).end() : res.status(422).end()
   })
 
@@ -42,7 +42,7 @@ const route = (server) => {
     const { teamId, hour, firstMin, firstHour, dayOfWeek } = req.body
     const cronJobKey = `${teamId}-close`
     const time = calculateTimeCronjob('0', hour, firstMin, firstHour)
-    const result = cronJob(cronJobKey, time.min, time.hour, dayOfWeek)
+    const result = cronJob(teamId, cronJobKey, time.min, time.hour, dayOfWeek)
     result === 'success' ? res.status(200).end() : res.status(422).end()
   })
 
