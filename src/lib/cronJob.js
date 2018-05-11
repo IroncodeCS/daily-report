@@ -4,6 +4,7 @@ import standuply from '../bot/standuply'
 const cronJobManager = new CronJobManager()
 const options = {
   start: false,
+  completion: () => ('Stoped!!'),
   timeZone: 'Asia/Bangkok'
 }
 
@@ -20,7 +21,7 @@ const cronJob = (cronJobKey, min, hour, dayOfWeek) => {
       `0 ${min} ${hour} * * ${dayOfWeek}`,
       () => { typeCronJob[0] === 'close' ? console.log('report') : standuply() },
       options)
-    cronJobManager.start(cronJobKey)
+      cronJobManager.start(cronJobKey)
 
   } else {
 
@@ -30,7 +31,8 @@ const cronJob = (cronJobKey, min, hour, dayOfWeek) => {
       () => { typeCronJob[0] === 'close' ? console.log('report') : standuply() })
 
   }
-  console.log(cronJobManager.listCrons())
+  return 'success'
+  // return cronJobManager.listCrons()
 }
 
 export default cronJob
