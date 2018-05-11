@@ -1,6 +1,6 @@
 import User from '../schema/User'
 
-const getUser = async () => {
+const getUser = async (team_id) => {
   const users = await User.find().exec()
   return users
 }

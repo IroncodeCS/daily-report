@@ -1,3 +1,4 @@
+import Team from './schema/Team'
 import getTeams from './lib/getTeam'
 import getUser from './lib/getUser'
 import getNotiByTeam from './lib/getNotiByTeam'
@@ -25,31 +26,56 @@ const route = (server) => {
   })
 
   server.get('/get-user', async (req, res) => {
-    const users = await getUser()
+    const { team_id } = req.params
+    const users = await getUser(team_id)
     res.json(users)
+  })
+
+  server.get('/get-user-team/:team_id', async (req, res) => {
+    const { team_id } = req.params
+    const team = await Team.findById(team_id).exec()
+    res.json(team)
+  })
+
+  server.post('/add-team', (req, res) => {
+    new Team({
+      team: req.body.team,
+      member: []
+    }).save()
+    res.send('Add')
+  })
+
+  server.post('/remove-team', (req, res) => {
+    Team.findByIdAndRemove(req.body.teamId, (err, res) => { })
+    res.send('Remove')
+  })
+
+  server.post('/edit-team', async (req, res) => {
+    await Team.update({ _id: req.body.teamId }, { team: req.body.team })
+    res.send('OK')
   })
 
   server.post('/update-cronjob-1', (req, res) => {
     const { teamId, firstMin, firstHour, dayOfWeek } = req.body
     const cronJobKey = `${teamId}-first`
-    cronJob(cronJobKey, firstMin, firstHour, dayOfWeek)
-    res.end()
+    const result = cronJob(teamId, cronJobKey, firstMin, firstHour, dayOfWeek)
+    result === 'success' ? res.status(200).end() : res.status(422).end()
   })
 
   server.post('/update-cronjob-2', (req, res) => {
     const { teamId, min, hour, firstMin, firstHour, dayOfWeek } = req.body
     const cronJobKey = `${teamId}-remind`
     const time = calculateTimeCronjob(min, hour, firstMin, firstHour)
-    cronJob(cronJobKey, time.min, time.hour, dayOfWeek)
-    res.end()
+    const result = cronJob(teamId, cronJobKey, time.min, time.hour, dayOfWeek)
+    result === 'success' ? res.status(200).end() : res.status(422).end()
   })
 
   server.post('/update-cronjob-3', (req, res) => {
     const { teamId, hour, firstMin, firstHour, dayOfWeek } = req.body
     const cronJobKey = `${teamId}-close`
     const time = calculateTimeCronjob('0', hour, firstMin, firstHour)
-    cronJob(cronJobKey, time.min, time.hour, dayOfWeek)
-    res.end()
+    const result = cronJob(teamId, cronJobKey, time.min, time.hour, dayOfWeek)
+    result === 'success' ? res.status(200).end() : res.status(422).end()
   })
 
   server.get('/save-message', (req, res) => {
