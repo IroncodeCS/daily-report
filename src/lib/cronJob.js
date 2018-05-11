@@ -14,6 +14,7 @@ const options = {
 const cronJob = (teamId, cronJobKey, min, hour, dayOfWeek) => {
 
   const schedule = `0 ${min} ${hour} * * ${dayOfWeek}`
+  // const schedule = `0 */1 * * * ${dayOfWeek}`
   const typeCronJob = /(close|first|remind)$/.exec(cronJobKey)
 
   const isExits = cronJobManager.exists(cronJobKey)
@@ -27,9 +28,6 @@ const cronJob = (teamId, cronJobKey, min, hour, dayOfWeek) => {
       options)
       cronJobManager.start(cronJobKey)
 
-      updateCronJobDbFirst(teamId, cronJobKey, schedule)
-      updateCronJobDbRemind(teamId, cronJobKey, schedule)
-      updateCronJobDbClose(teamId, cronJobKey, schedule)
   } else {
 
     cronJobManager.update(
