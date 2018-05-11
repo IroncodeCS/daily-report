@@ -1,9 +1,15 @@
 import getTeams from './lib/getTeam'
 import getUser from './lib/getUser'
 // import Standuply from './bot/standuply';
+import Message from './schema/Message'
+import calculateTimeCronjob from './lib/calculateTimeCronJob'
+import cronJob from './lib/cronJob'
+
 
 const route = (server) => {
-  server.get('/', (req, res) => {
+
+  server.get('/standuply', (req, res) => {
+    // Standuply()    
     res.send('Hello from Opal')
   })
 
@@ -17,7 +23,29 @@ const route = (server) => {
     res.json(users)
   })
 
-  // Standuply()
+  server.post('/update-cronjob-1', (req, res) => {
+    const { teamId, firstMin, firstHour, dayOfWeek } = req.body
+    const cronJobKey = `${teamId}-first`
+    cronJob(cronJobKey, firstMin, firstHour, dayOfWeek)
+    res.end()
+  })
+
+  server.post('/update-cronjob-2', (req, res) => {
+    const { teamId, min, hour, firstMin, firstHour, dayOfWeek } = req.body
+    const cronJobKey = `${teamId}-remind`
+    const time = calculateTimeCronjob(min, hour, firstMin, firstHour)
+    cronJob(cronJobKey, time.min, time.hour, dayOfWeek)
+    res.end()
+  })
+
+  server.post('/update-cronjob-3', (req, res) => {
+    const { teamId, hour, firstMin, firstHour, dayOfWeek } = req.body
+    const cronJobKey = `${teamId}-close`
+    const time = calculateTimeCronjob('0', hour, firstMin, firstHour)
+    cronJob(cronJobKey, time.min, time.hour, dayOfWeek)
+    res.end()
+  })
+
   server.get('/save-message', (req, res) => {
 
     // const doc = new Message({

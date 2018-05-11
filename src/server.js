@@ -2,7 +2,6 @@ import express from 'express'
 import cors from 'cors'
 import bodyParser from 'body-parser'
 import mongoose from 'mongoose'
-import cronJob from 'cron'
 import dotenv from 'dotenv'
 import route from './route'
 import standuply from './bot/standuply'
@@ -11,8 +10,6 @@ dotenv.load()
 
 const server = express()
 
-const CronJob = cronJob.CronJob
-
 const { NODE_PORT, MONGO_CONNECTION } = process.env
 
 server.use(cors())
@@ -20,14 +17,6 @@ server.use(bodyParser.json())
 server.use(bodyParser.urlencoded({
   extended: true,
 }))
-
-new CronJob('0 */5 * * * *', () => {
-  console.log('cronJob start')
-}, null, true, 'Asia/Bangkok')
-
-// new CronJob('0 */5 * * * *', () => {
-//   console.log('cronJob 2 start')
-// }, null, true, 'Asia/Bangkok')
 
 mongoose.Promise = global.Promise
 mongoose.connect(MONGO_CONNECTION)
