@@ -3,9 +3,11 @@ import cors from 'cors'
 import bodyParser from 'body-parser'
 import mongoose from 'mongoose'
 import cronJob from 'cron'
-
+import dotenv from 'dotenv'
 import route from './route'
 import standuply from './bot/standuply'
+
+dotenv.load()
 
 const server = express()
 
