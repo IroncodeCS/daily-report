@@ -1,4 +1,5 @@
-import Message from './schema/Message'
+import getTeams from './lib/getTeam'
+import getUser from './lib/getUser'
 // import Standuply from './bot/standuply';
 
 const route = (server) => {
@@ -6,10 +7,16 @@ const route = (server) => {
     res.send('Hello from Opal')
   })
 
-  server.get('/get-team', (req, res) => {
-    const team = Message.find().exec()
-    res.json(team)
+  server.get('/get-team', async (req, res) => {
+    const teams = await getTeams()
+    res.json(teams)
   })
+
+  server.get('/get-user', async (req, res) => {
+    const users = await getUser()
+    res.json(users)
+  })
+
   // Standuply()
   server.get('/save-message', (req, res) => {
 
