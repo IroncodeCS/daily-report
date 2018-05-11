@@ -1,5 +1,6 @@
 import getTeams from './lib/getTeam'
 import getUser from './lib/getUser'
+import getNotiByTeam from './lib/getNotiByTeam'
 // import Standuply from './bot/standuply';
 import Message from './schema/Message'
 import calculateTimeCronjob from './lib/calculateTimeCronJob'
@@ -11,6 +12,11 @@ const route = (server) => {
   server.get('/standuply', (req, res) => {
     // Standuply()    
     res.send('Hello from Opal')
+  })
+
+  server.get('/get-noti-by-team/:team_id', async (req, res) => {
+    const notiData = await getNotiByTeam(req.params.team_id)
+    res.json(notiData)
   })
 
   server.get('/get-team', async (req, res) => {
